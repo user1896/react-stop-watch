@@ -8,9 +8,15 @@ import { FaPlay } from "react-icons/fa6";
 function App() {
   // let myTimer = new WatchTime(5, 159, 159)
   const [index, setIndex] = useState(0)
-
+  let globalVar
+// ////////////
+  // "useEffect" before finishing this
+// ////////////
   function handlerPlay(){
-    setIndex(index+1)
+    // setIndex(index+1)
+    setInterval(() => {
+      setIndex(index+1)
+    }, 600);
   }
 
   function handlerReset(){
