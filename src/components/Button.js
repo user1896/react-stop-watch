@@ -1,9 +1,9 @@
 import '../styles/Button.css'
 
-export default function Button({logo}){
+export default function Button({children, onclick}){
 	return(
-		<button>
-			{logo}
+		<button onClick={onclick}>
+			{children}
 		</button>
 	)
 }

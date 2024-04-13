@@ -1,7 +1,8 @@
 button{
 	font-size: calc(1vw + 0.8rem);
 	color: white;
-	width: 2.6vw;
-	width: clamp(1.5rem, 2.6vw, 6rem);
-	padding: 0.3rem 0 0.3rem 0;
+	background-color: orange;
+	/* width: 2.6vw;
+	width: clamp(1.5rem, 2.6vw, 6rem); */
+	/* padding: 0.3rem 0 0.3rem 0; */
 }
