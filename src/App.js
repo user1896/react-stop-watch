@@ -1,40 +1,66 @@
 import './App.css';
 import { useEffect, useRef, useState } from 'react'
 import Button from './components/Button'
-import WatchTime from "./components-modules/watchTimeModule.mjs"
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import { FaPlay } from "react-icons/fa6";
 
-function App() {
-  const [index, setIndex] = useState(0)
-  const intervalRef = useRef(null)
-  const [isPlaying, setIsPlaying] = useState(false)
-  
-  function handlerPlay(){
-    setIsPlaying(!isPlaying)
+function regulateTimer(timer){
+  while( timer.s > 59 ){
+    timer.s -= 60
+    timer.m++
   }
 
+  while( timer.m > 59 ){
+    timer.m -= 60
+    timer.h++
+  }
+
+  if( timer.h > 23 ){
+    timer.h = 24
+    timer.m = 0
+    timer.s = 0
+  }
+
+  return timer
+}
+
+function incrementTimer( timer ){
+  let localTimer = {...timer}
+
+  localTimer.s++
+  localTimer = regulateTimer(localTimer)
+
+  return localTimer
+}
+
+function App() {
+  const [myTimer, setMyTimer] = useState({h: 5, m: 159, s: 159})
+  const timerIntervalRef = useRef(null)
+  const [isTimerPlaying, setIsTimerPlaying] = useState(false)
+
+  function handlerPlay(){
+    setIsTimerPlaying(!isTimerPlaying)
+  }
+  
   useEffect(() => {
-    if(isPlaying == true){
-      intervalRef.current = setInterval(() => {
-        setIndex(index+1)
+    if(isTimerPlaying == true){
+      timerIntervalRef.current = setInterval(() => {
+        setMyTimer(incrementTimer(myTimer))
       }, 1000)
     }
 
-    return () => clearInterval(intervalRef.current)
-  }, [index, isPlaying])
+    return () => clearInterval(timerIntervalRef.current)
+  }, [myTimer, isTimerPlaying])
 
   function handlerReset(){
-    // intervalRef.current = null
-    clearInterval(intervalRef.current)
-    console.log(intervalRef.current)
-    setIndex(0)
+    clearInterval(timerIntervalRef.current)
+    setMyTimer({h: 0, m: 0, s: 0})
   }
 
   return (
     <div className="App flex-center">
       <main>
-        <div className="timer flex-center">{index}</div>
+        <div className="timer flex-center"><p>{myTimer.h}:{myTimer.m}:{myTimer.s}</p></div>
         <div className="control flex-center">
           <Button onclick={handlerPlay}>
             <FaPlay className="play"/>
