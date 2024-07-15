@@ -1,40 +1,12 @@
-import './App.css';
 import { useEffect, useRef, useState } from 'react'
 import Button from './components/Button'
+import incrementTimer from './utils/incrementTimer';
 import { FaArrowRotateLeft } from "react-icons/fa6";
 import { FaPlay } from "react-icons/fa6";
-
-function regulateTimer(timer){
-  while( timer.s > 59 ){
-    timer.s -= 60
-    timer.m++
-  }
-
-  while( timer.m > 59 ){
-    timer.m -= 60
-    timer.h++
-  }
-
-  if( timer.h > 23 ){
-    timer.h = 24
-    timer.m = 0
-    timer.s = 0
-  }
-
-  return timer
-}
-
-function incrementTimer( timer ){
-  let localTimer = {...timer}
-
-  localTimer.s++
-  localTimer = regulateTimer(localTimer)
-
-  return localTimer
-}
+import { FaPause } from "react-icons/fa6";
 
 function App() {
-  const [myTimer, setMyTimer] = useState({h: 5, m: 159, s: 159})
+  const [myTimer, setMyTimer] = useState({h: 5, m: 59, s: 20})
   const timerIntervalRef = useRef(null)
   const [isTimerPlaying, setIsTimerPlaying] = useState(false)
 
@@ -58,15 +30,18 @@ function App() {
   }
 
   return (
-    <div className="App flex-center">
-      <main>
-        <div className="timer flex-center"><p>{myTimer.h}:{myTimer.m}:{myTimer.s}</p></div>
-        <div className="control flex-center">
-          <Button onclick={handlerPlay}>
-            <FaPlay className="play"/>
+    <div className="h-screen bg-cyan-700 flex justify-center items-center">
+      <main className="h-80 w-96 bg-orange-100 rounded-2xl">
+        <div className="h-2/3 text-5xl flex justify-center items-center"><p>{myTimer.h} : {myTimer.m} : {myTimer.s}</p></div>
+        <div className="flex justify-center items-center">
+          <Button
+            onclick={handlerPlay}
+            extraStlyles={isTimerPlaying ? "mr-3 bg-yellow-400 hover:bg-yellow-500" : "mr-3 bg-green-400 hover:bg-green-500"}
+          >
+            {isTimerPlaying ? (<FaPause />) : (<FaPlay/>) }
           </Button>
-          <Button onclick={handlerReset}>
-            <FaArrowRotateLeft className="reset"/>
+          <Button onclick={handlerReset} extraStlyles="bg-red-400 hover:bg-red-500" >
+            <FaArrowRotateLeft/>
           </Button>
         </div>
       </main>
